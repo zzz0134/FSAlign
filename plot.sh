@@ -1,0 +1,24 @@
+python fractal.py \
+  --base-module our_code_final \
+  --data-root /work/was598/modilty_gap/tools/data \
+  --out-dir   /work/was598/modilty_gap/figs/result.127 \
+  --models clip \
+  --datasets flickr30k \
+  --max-images 5000 \
+  --fit-window-mode ours \
+  --fit-min-span-decades 0.2 \
+  --fit-min-r2 0.985 \
+  --fit-min-points 12 \
+  --fit-sigma-eff-factor 0.12 \
+  --fit-lambda-sigma 1.0 \
+  --fit-prefer max_wr \
+  --enforce-delta-improve \
+  --task-metrics \
+  --uncertainty-runs 5 \
+  --bootstrap-frac 0.8 \
+  --r-qhi 0.95 \
+  --r-knn-k 5 \
+  --r-knn-qlo 0.001 \
+  --r-knn-samples 5000 \
+  --lora-mix 1.0 \
+  --lora-state-pattern "/work/was598/modilty_gap/results/our_final_train_1.23/{model}_{dataset}_lora_state.pt"

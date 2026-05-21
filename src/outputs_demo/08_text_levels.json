@@ -1,0 +1,16 @@
+{
+  "Level-1 words (local)": [
+    "guys",
+    "hair",
+    "hands",
+    "yard"
+  ],
+  "Level-2 phrases (relations)": [
+    "Two young guys",
+    "shaggy hair look at their hands",
+    "hanging out in the yard."
+  ],
+  "Level-3 sentence": [
+    "Two young guys with shaggy hair look at their hands while hanging out in the yard."
+  ]
+}
