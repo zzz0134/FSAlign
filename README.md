@@ -1,52 +1,63 @@
-# Fractal Manifold Alignment for Cross-Modal Retrieval & Zero-Shot Classification
+# FSAlign (ICML Release Package)
 
-This repository implements a **unified modality alignment framework** based on a **Fractal Manifold** and **Fractal Diffusion Kernel**.
-It supports:
-- **Text-to-Image** retrieval
-- **Image-to-Text** retrieval
-- **Zero-Shot Classification** (point vs. distribution matching)
+This repository provides the release package for **FSAlign**, a modality-gap-aware cross-modal alignment method for image-text retrieval and transfer zero-shot evaluation.
 
-Dataset: **Flickr30K** with **CLIP** embeddings.
+## 1. What Is Included
 
-## Quick Start
+The package contains the exact files used for the current release run:
 
-### 0) Install
-```
-pip install -r requirements.txt
-```
+- `FSAlign_release.py`: main algorithm/evaluation entrypoint (renamed from the internal `our_code` filename).
+- `MG.py`: modality-gap metric and MG-shift utilities.
+- `vqav2_eval.py`: VQAv2-related evaluation utilities used by the main script.
+- `tools/run_release_gap_embedded_20260521.sh`: end-to-end run script.
+- `tools/data/`: data root used by the run script.
+- `results/clip_full_plus_zs_releasegap_20260521/our_code_final_results.jsonl`: result file requested for release.
 
-### 1) Precompute CLIP embeddings
-```
-python -m src.precompute_embeddings   --data_root data/flickr30k   --images_dir flickr30k-images   --captions_file results_20130124.token   --out_dir data/flickr30k/clip_embeddings   --clip_model ViT-B-32 --clip_pretrained openai   --batch_size 128 --device cuda
-```
+## 2. Task Setting
 
-### 2) Train fractal alignment
-```
-python -m src.train   --emb_dir data/flickr30k/clip_embeddings   --epochs 30 --batch_size 1024 --lr 1e-3   --proj_dim 512   --num_scales 8   --r_min 0.1 --r_max 5.0   --alpha_mode spectral --learn_Q true   --device cuda
-```
+The script evaluates:
 
-### 3) Evaluate retrieval
-```
-python -m src.eval_retrieval   --emb_dir data/flickr30k/clip_embeddings   --ckpt checkpoints/best.pt   --num_scales 8 --r_min 0.1 --r_max 5.0   --alpha_mode spectral   --device cuda
-```
+- Cross-modal retrieval:
+  - MS-COCO Karpathy split
+  - Flickr30k Karpathy split
+- Zero-shot classification:
+  - CIFAR100
+  - DTD
+  - Tiny-ImageNet-200
 
-### 4) Evaluate zero-shot classification
-Prepare a `prompts.json` like:
-```json
-{
-  "dog": [0, 1, 2],
-  "cat": [3, 4, 5]
-}
-```
-> Here the integers are indices into `txt_embeddings.pt` **for demo**. In practice, re-encode your class prompts via CLIP text encoder and pass those embeddings in (you can adapt `eval_zsc.py` accordingly).
+Reported metrics include:
 
-Run:
-```
-python -m src.eval_zsc   --emb_dir data/flickr30k/clip_embeddings   --ckpt checkpoints/best.pt   --prompts_file prompts.json   --device cuda
+- Retrieval: I2T/T2I R@1, R@5, R@10
+- Modality gap: CD, RMG, NAS@100, CMAS
+- Classification: Top-1 / Top-5
+
+## 3. Reproducibility Notes
+
+- The release run uses CLIP (`ViT-B-32`, OpenAI weights).
+- Training/evaluation hyperparameters are set in the provided run script.
+- Gap computation is embedded in the main code path (not a separate post-hoc JSON rewrite).
+
+## 4. Run
+
+```bash
+bash tools/run_release_gap_embedded_20260521.sh
 ```
 
-## Notes
-- This code trains small projection heads and a learnable **fractal diffusion kernel** (with spectral dimension `Q`) on top of CLIP features.
-- Retrieval uses **fractal diffusion distance**; classification uses **fractal MMD energy**.
-- The design mirrors the paper's idea: **align distributions across scales** to shrink the modality gap.
+Outputs are written under:
 
+- `results/clip_full_plus_zs_releasegap_embedded_20260521/` (new run outputs)
+- `results/clip_full_plus_zs_releasegap_20260521/our_code_final_results.jsonl` (included release result file)
+
+## 5. Environment
+
+Recommended environment:
+
+- Python 3.10+
+- PyTorch + CUDA-enabled GPU
+- `transformers`, `open_clip_torch`, `torchvision`, `Pillow`, `numpy`
+
+Install dependencies according to your local setup before running.
+
+## 6. Contact
+
+For questions about this release package, please open an issue in this repository.

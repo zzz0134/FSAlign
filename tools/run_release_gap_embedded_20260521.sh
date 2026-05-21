@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd /work/was598/modilty_gap
+python -u FSAlign_release.py \
+  --data-root /work/was598/modilty_gap/tools/data \
+  --out-dir /work/was598/modilty_gap/results/clip_full_plus_zs_releasegap_embedded_20260521 \
+  --models clip \
+  --clip-model ViT-B-32 \
+  --disable-recommended-preset \
+  --batch-size 128 \
+  --num-workers 8 \
+  --max-coco 5000 \
+  --max-flickr 5000 \
+  --max-cls 10000 \
+  --nas-k 100 \
+  --nas-max-items 5000 \
+  --intra-samples 20000 \
+  --train-epochs 30 \
+  --train-anchors 512 \
+  --anchor-batch 128 \
+  --spectral-samples 512 \
+  --train-lr 1e-3 \
+  --lambda-dbl 1.0 \
+  --lambda-spec 0.1 \
+  --lambda-match 0.1 \
+  --lambda-align 0.5 \
+  --lambda-orth 0.1 \
+  --train-reg 1e-3 \
+  --align-temp 0.07 \
+  --align-samples 0 \
+  --lora-rank 8 \
+  --lora-alpha 8 \
+  --lora-mix 0.3 \
+  --multi-caption \
+  --caption-agg random \
+  --text-variant short \
+  --paragraph-sentences 3 \
+  --dimension-mode shared \
+  --df 2.0 \
+  --ds 1.0 \
+  --dw 4.0 \
+  --lambda-neighbor-compete 5.0 \
+  --neighbor-compete-k 100 \
+  --neighbor-compete-train-k 100 \
+  --neighbor-compete-samples 0 \
+  --neighbor-compete-margin 0.05 \
+  --neighbor-compete-chunk 1024 \
+  --early-stop \
+  --val-split karpathy \
+  --val-frac 0.1 \
+  --patience 3 \
+  --caption-agg-val-mean \
+  --val-lora-mix-grid 0.2,0.25,0.3,0.35,0.4 \
+  --zeroshot-profile \
+  --zeroshot-lora-mix-grid 0.05,0.1,0.15,0.2,0.25,0.3 \
+  --zeroshot-calib-items 1000 \
+  --zeroshot-lambda-neighbor-compete 0.0 \
+  --zeroshot-lambda-align 0.5 \
+  --zeroshot-lambda-orth 0.2 \
+  --zeroshot-train-reg 1e-3
