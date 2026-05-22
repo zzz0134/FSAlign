@@ -1,0 +1,12 @@
+# Absolute or project-root-relative dataset root
+data_root: /work/was598/modilty_gap/tools/data
+
+# Default image size for dataloaders (you can override per-call)
+image_size: 224
+
+# Normalization presets
+# 'imagenet' matches many vision baselines (mean/std of ImageNet-1k)
+normalize:
+  preset: imagenet
+  imagenet_mean: [0.485, 0.456, 0.406]
+  imagenet_std:  [0.229, 0.224, 0.225]
